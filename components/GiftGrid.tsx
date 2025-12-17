@@ -10,7 +10,7 @@ import { Gift } from "@/types/gift"
 const STORAGE_KEY = "chosen_gifts"
 // Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
 const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17-reset-2"
+const RESET_TOKEN = "2025-12-17-reset-3"
 
 export default function GiftGrid() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null)

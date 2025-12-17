@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input"
 import { gifts } from "@/data/gifts"
 import { Lock, Gift, Users, TrendingUp, CheckCircle2, FileDown } from "lucide-react"
 import toast from "react-hot-toast"
-import { getRSVPs, getTotalGuests, type RSVPEntry } from "@/lib/rsvpStorage"
+import { getRSVPs, getTotalGuests, clearRSVPs, type RSVPEntry } from "@/lib/rsvpStorage"
 import { generatePDF } from "@/lib/generatePDF"
 
 const STORAGE_KEY = "chosen_gifts"
 // Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
 const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17-reset-2"
+const RESET_TOKEN = "2025-12-17-reset-3"
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -132,6 +132,23 @@ export default function AdminPage() {
     }
   }
 
+  const handleResetTestData = () => {
+    if (typeof window === "undefined") return
+    const ok = window.confirm("Resetar dados locais deste navegador?\n\nIsso vai limpar:\n- presentes escolhidos\n- confirmações de presença\n\n(afeta apenas este navegador/dispositivo)")
+    if (!ok) return
+
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+      clearRSVPs()
+      setChosenGifts([])
+      setRsvps([])
+      toast.success("Dados resetados neste navegador.")
+    } catch (error) {
+      console.error("Erro ao resetar dados:", error)
+      toast.error("Erro ao resetar dados. Tente novamente.")
+    }
+  }
+
   return (
     <div className="min-h-screen bg-beige-light py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -140,13 +157,22 @@ export default function AdminPage() {
             <h1 className="font-display text-4xl font-bold text-charcoal-dark">
               Dashboard - Chá de Casa Nova
             </h1>
-            <Button
-              onClick={handleGeneratePDF}
-              className="bg-brown-soft hover:bg-brown-soft/90 text-white"
-            >
-              <FileDown className="mr-2 h-5 w-5" />
-              Gerar PDF
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={handleResetTestData}
+                className="w-full sm:w-auto"
+              >
+                Resetar dados (teste)
+              </Button>
+              <Button
+                onClick={handleGeneratePDF}
+                className="bg-brown-soft hover:bg-brown-soft/90 text-white w-full sm:w-auto"
+              >
+                <FileDown className="mr-2 h-5 w-5" />
+                Gerar PDF
+              </Button>
+            </div>
           </div>
 
           {/* Estatísticas */}
