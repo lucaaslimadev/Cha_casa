@@ -30,7 +30,7 @@ function GiftCard({ gift, index, isChosen, onClick }: GiftCardProps) {
           ? "ring-2 ring-brown-soft ring-offset-2" 
           : "hover:shadow-2xl hover:shadow-black/20"
       }`}>
-        <div className="relative h-64 w-full flex-shrink-0 bg-rose-soft/10">
+        <div className="relative h-56 sm:h-64 w-full flex-shrink-0 bg-rose-soft/10">
           {imageLoading && (
             <div className="absolute inset-0 bg-rose-soft/20 animate-pulse flex items-center justify-center">
               <div className="w-16 h-16 border-4 border-brown-soft/30 border-t-brown-soft rounded-full animate-spin"></div>

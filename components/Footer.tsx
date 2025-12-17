@@ -41,7 +41,7 @@ function GalleryImage({ src, index, onClick }: { src: string; index: number; onC
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="relative h-48 w-full rounded-2xl overflow-hidden shadow-xl shadow-black/20 bg-rose-soft/20 cursor-pointer group"
+      className="relative h-32 sm:h-48 w-full rounded-2xl overflow-hidden shadow-xl shadow-black/20 bg-rose-soft/20 cursor-pointer group"
       onClick={onClick}
     >
       {imageLoading && !imageError && (
@@ -120,7 +120,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-charcoal-dark text-white py-24 px-4">
+    <footer className="bg-charcoal-dark text-white py-16 sm:py-24 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Gallery */}
         <motion.div

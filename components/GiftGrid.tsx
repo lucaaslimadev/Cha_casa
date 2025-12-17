@@ -10,7 +10,7 @@ import { Gift } from "@/types/gift"
 const STORAGE_KEY = "chosen_gifts"
 // Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
 const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17"
+const RESET_TOKEN = "2025-12-17-reset-2"
 
 export default function GiftGrid() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null)
@@ -79,7 +79,7 @@ export default function GiftGrid() {
   }
 
   return (
-    <section id="gifts" className="py-24 px-4 bg-white">
+    <section id="gifts" className="py-16 sm:py-24 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

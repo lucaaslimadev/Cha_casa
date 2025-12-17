@@ -11,7 +11,7 @@ interface HeroProps {
 
 export default function Hero({ onScrollToGifts }: HeroProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100dvh] min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Gradient */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -35,7 +35,7 @@ export default function Hero({ onScrollToGifts }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4"
+          className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4"
         >
           Anna & Lucas
         </motion.h1>

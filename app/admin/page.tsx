@@ -12,7 +12,7 @@ import { generatePDF } from "@/lib/generatePDF"
 const STORAGE_KEY = "chosen_gifts"
 // Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
 const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17"
+const RESET_TOKEN = "2025-12-17-reset-2"
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false)
