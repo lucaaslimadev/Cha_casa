@@ -304,7 +304,7 @@ export default function AdminPage() {
                         </p>
                         {rsvp.message && (
                           <p className="text-sm text-charcoal-dark/80 italic mt-2">
-                            "{rsvp.message}"
+                            &quot;{rsvp.message}&quot;
                           </p>
                         )}
                         <p className="text-xs text-charcoal-dark/50 mt-2">
