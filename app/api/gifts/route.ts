@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
-// Simulação de banco de dados em memória (em produção, usar um banco real)
-export let chosenGifts: string[] = []
+// Dados já existentes baseados nas mensagens do Telegram
+let chosenGifts: string[] = ["13"] // Sanduicheira já escolhida pela Laleska
 
 export async function GET() {
   return NextResponse.json({ chosenGifts })
