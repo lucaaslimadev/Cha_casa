@@ -32,8 +32,21 @@ export default function RSVPForm({ onSuccess, onCancel }: RSVPFormProps) {
 
   const onSubmit = async (data: RSVPFormData) => {
     try {
-      // Enviar para API de RSVP (separada da API de presentes)
-      const response = await fetch("/api/rsvp", {
+      // Salvar na API global primeiro
+      const rsvpResponse = await fetch("/api/rsvp-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          guests: parseInt(data.guests),
+          message: data.message || "",
+        }),
+      })
+
+      // Enviar notificação para Telegram
+      const telegramResponse = await fetch("/api/rsvp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,16 +58,16 @@ export default function RSVPForm({ onSuccess, onCancel }: RSVPFormProps) {
         }),
       })
 
-      const result = await response.json()
+      const telegramResult = await telegramResponse.json()
 
-      if (!response.ok) {
-        console.error("API Error:", result)
-        const errorMsg = result.error || "Erro ao enviar"
+      if (!telegramResponse.ok) {
+        console.error("Telegram API Error:", telegramResult)
+        const errorMsg = telegramResult.error || "Erro ao enviar notificação"
         toast.error(`Erro: ${errorMsg}`)
         throw new Error(errorMsg)
       }
 
-      // Salvar no localStorage também
+      // Salvar no localStorage também (backup local)
       saveRSVP({
         name: data.name,
         guests: parseInt(data.guests),

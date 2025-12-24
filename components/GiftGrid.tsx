@@ -7,53 +7,31 @@ import GiftCard from "./GiftCard"
 import GiftModal from "./GiftModal"
 import { Gift } from "@/types/gift"
 
-const STORAGE_KEY = "chosen_gifts"
-// Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
-const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17-reset-3"
-
 export default function GiftGrid() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null)
   const [chosenGifts, setChosenGifts] = useState<Set<string>>(new Set())
 
-  // Carregar presentes escolhidos do localStorage ao montar
+  // Carregar presentes escolhidos da API global
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const loadChosenGifts = async () => {
       try {
-        // Reset automático (uma vez) para liberar todos os presentes novamente
-        const lastReset = localStorage.getItem(RESET_TOKEN_KEY)
-        if (lastReset !== RESET_TOKEN) {
-          localStorage.removeItem(STORAGE_KEY)
-          localStorage.setItem(RESET_TOKEN_KEY, RESET_TOKEN)
-        }
-
-        const stored = localStorage.getItem(STORAGE_KEY)
-        if (stored) {
-          const giftIds = JSON.parse(stored) as string[]
-          // Garante que IDs removidos do catálogo não "quebrem" o estado
-          const validIds = giftIds.filter((id) => gifts.some((g) => g.id === id))
+        const response = await fetch('/api/gifts')
+        const data = await response.json()
+        if (data.chosenGifts) {
+          const validIds = data.chosenGifts.filter((id: string) => gifts.some((g) => g.id === id))
           setChosenGifts(new Set(validIds))
         }
       } catch (error) {
-        console.error("Erro ao carregar presentes do localStorage:", error)
+        console.error("Erro ao carregar presentes:", error)
       }
     }
+    
+    loadChosenGifts()
+    
+    // Atualizar a cada 5 segundos para sincronizar com outras sessões
+    const interval = setInterval(loadChosenGifts, 5000)
+    return () => clearInterval(interval)
   }, [])
-
-  // Salvar no localStorage sempre que chosenGifts mudar
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        if (chosenGifts.size === 0) {
-          localStorage.removeItem(STORAGE_KEY)
-          return
-        }
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(chosenGifts)))
-      } catch (error) {
-        console.error("Erro ao salvar presentes no localStorage:", error)
-      }
-    }
-  }, [chosenGifts])
 
   const handleGiftClick = (gift: Gift) => {
     setSelectedGift(gift)
@@ -63,23 +41,25 @@ export default function GiftGrid() {
     setSelectedGift(null)
   }
 
-  const handleGiftChosen = (giftId: string) => {
-    setChosenGifts((prev) => {
-      const newSet = new Set([...prev, giftId])
-      // Salvar imediatamente no localStorage
-      if (typeof window !== "undefined") {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(newSet)))
-        } catch (error) {
-          console.error("Erro ao salvar presente no localStorage:", error)
-        }
+  const handleGiftChosen = async (giftId: string) => {
+    try {
+      const response = await fetch('/api/gifts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ giftId, action: 'add' })
+      })
+      
+      const data = await response.json()
+      if (data.success) {
+        setChosenGifts(new Set(data.chosenGifts))
       }
-      return newSet
-    })
+    } catch (error) {
+      console.error("Erro ao salvar presente:", error)
+    }
   }
 
   return (
-    <section id="gifts" className="py-16 sm:py-24 px-4 bg-white">
+    <section id="gifts" className="py-24 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

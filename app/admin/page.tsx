@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input"
 import { gifts } from "@/data/gifts"
 import { Lock, Gift, Users, TrendingUp, CheckCircle2, FileDown } from "lucide-react"
 import toast from "react-hot-toast"
-import { getRSVPs, getTotalGuests, clearRSVPs, type RSVPEntry } from "@/lib/rsvpStorage"
 import { generatePDF } from "@/lib/generatePDF"
 
-const STORAGE_KEY = "chosen_gifts"
-// Altere esse valor quando quiser "resetar" a lista para todo mundo após um deploy
-const RESET_TOKEN_KEY = "chosen_gifts_reset_token"
-const RESET_TOKEN = "2025-12-17-reset-3"
+interface RSVPEntry {
+  id: string
+  name: string
+  guests: number
+  message?: string
+  date: string
+}
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -22,28 +24,35 @@ export default function AdminPage() {
   const [rsvps, setRsvps] = useState<RSVPEntry[]>([])
 
   useEffect(() => {
-    // Carregar presentes escolhidos e confirmações do localStorage
-    if (typeof window !== "undefined") {
+    // Carregar dados das APIs globais
+    const loadData = async () => {
       try {
-        // Reset automático (uma vez) para liberar todos os presentes novamente
-        const lastReset = localStorage.getItem(RESET_TOKEN_KEY)
-        if (lastReset !== RESET_TOKEN) {
-          localStorage.removeItem(STORAGE_KEY)
-          localStorage.setItem(RESET_TOKEN_KEY, RESET_TOKEN)
-        }
-
-        const stored = localStorage.getItem(STORAGE_KEY)
-        if (stored) {
-          const giftIds = JSON.parse(stored) as string[]
-          const validIds = giftIds.filter((id) => gifts.some((g) => g.id === id))
+        // Carregar presentes escolhidos
+        const giftsResponse = await fetch('/api/gifts')
+        const giftsData = await giftsResponse.json()
+        if (giftsData.chosenGifts) {
+          const validIds = giftsData.chosenGifts.filter((id: string) => gifts.some((g) => g.id === id))
           setChosenGifts(validIds)
         }
-        setRsvps(getRSVPs())
+
+        // Carregar confirmações de presença
+        const rsvpResponse = await fetch('/api/rsvp-data')
+        const rsvpData = await rsvpResponse.json()
+        if (rsvpData.rsvps) {
+          setRsvps(rsvpData.rsvps)
+        }
       } catch (error) {
         console.error("Erro ao carregar dados:", error)
       }
     }
-  }, [])
+    
+    if (authenticated) {
+      loadData()
+      // Atualizar a cada 10 segundos
+      const interval = setInterval(loadData, 10000)
+      return () => clearInterval(interval)
+    }
+  }, [authenticated])
 
   const handleLogin = async () => {
     setLoading(true)
@@ -113,7 +122,7 @@ export default function AdminPage() {
   const totalGifts = gifts.length
   const chosenCount = chosenGifts.length
   const percentage = Math.round((chosenCount / totalGifts) * 100)
-  const totalGuests = getTotalGuests()
+  const totalGuests = rsvps.reduce((total, rsvp) => total + rsvp.guests, 0)
 
   const handleGeneratePDF = () => {
     try {
@@ -132,23 +141,6 @@ export default function AdminPage() {
     }
   }
 
-  const handleResetTestData = () => {
-    if (typeof window === "undefined") return
-    const ok = window.confirm("Resetar dados locais deste navegador?\n\nIsso vai limpar:\n- presentes escolhidos\n- confirmações de presença\n\n(afeta apenas este navegador/dispositivo)")
-    if (!ok) return
-
-    try {
-      localStorage.removeItem(STORAGE_KEY)
-      clearRSVPs()
-      setChosenGifts([])
-      setRsvps([])
-      toast.success("Dados resetados neste navegador.")
-    } catch (error) {
-      console.error("Erro ao resetar dados:", error)
-      toast.error("Erro ao resetar dados. Tente novamente.")
-    }
-  }
-
   return (
     <div className="min-h-screen bg-beige-light py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -157,17 +149,35 @@ export default function AdminPage() {
             <h1 className="font-display text-4xl font-bold text-charcoal-dark">
               Dashboard - Chá de Casa Nova
             </h1>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="flex gap-2">
               <Button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/populate', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ action: 'populate', password })
+                    })
+                    const result = await response.json()
+                    if (result.success) {
+                      toast.success(result.message)
+                      // Recarregar dados
+                      window.location.reload()
+                    } else {
+                      toast.error(result.error)
+                    }
+                  } catch (error) {
+                    toast.error('Erro ao popular dados')
+                  }
+                }}
                 variant="outline"
-                onClick={handleResetTestData}
-                className="w-full sm:w-auto"
+                className="text-sm"
               >
-                Resetar dados (teste)
+                Popular Dados Existentes
               </Button>
               <Button
                 onClick={handleGeneratePDF}
-                className="bg-brown-soft hover:bg-brown-soft/90 text-white w-full sm:w-auto"
+                className="bg-brown-soft hover:bg-brown-soft/90 text-white"
               >
                 <FileDown className="mr-2 h-5 w-5" />
                 Gerar PDF
@@ -294,7 +304,7 @@ export default function AdminPage() {
                         </p>
                         {rsvp.message && (
                           <p className="text-sm text-charcoal-dark/80 italic mt-2">
-                            &quot;{rsvp.message}&quot;
+                            "{rsvp.message}"
                           </p>
                         )}
                         <p className="text-xs text-charcoal-dark/50 mt-2">

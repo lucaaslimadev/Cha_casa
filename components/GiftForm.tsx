@@ -37,8 +37,20 @@ export default function GiftForm({ gift, onSuccess, onCancel }: GiftFormProps) {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Enviar para API do Telegram
-      const response = await fetch("/api/telegram", {
+      // Salvar na API global primeiro
+      const giftResponse = await fetch("/api/gifts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          giftId: gift.id,
+          action: "add"
+        }),
+      })
+
+      // Enviar notificação para Telegram
+      const telegramResponse = await fetch("/api/telegram", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,11 +62,11 @@ export default function GiftForm({ gift, onSuccess, onCancel }: GiftFormProps) {
         }),
       })
 
-      const result = await response.json()
+      const telegramResult = await telegramResponse.json()
 
-      if (!response.ok) {
-        console.error("API Error:", result)
-        const errorMsg = result.error || "Erro ao enviar"
+      if (!telegramResponse.ok) {
+        console.error("Telegram API Error:", telegramResult)
+        const errorMsg = telegramResult.error || "Erro ao enviar notificação"
         
         // Mensagem específica para Chat ID não configurado
         if (errorMsg.includes("Chat ID")) {

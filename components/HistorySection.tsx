@@ -14,7 +14,7 @@ export default function HistorySection() {
   const [rsvpOpen, setRsvpOpen] = useState(false)
 
   return (
-    <section className="py-16 sm:py-24 px-4 bg-beige-light">
+    <section className="py-24 px-4 bg-beige-light">
       <div className="max-w-4xl mx-auto">
         {/* Story Text */}
         <motion.div

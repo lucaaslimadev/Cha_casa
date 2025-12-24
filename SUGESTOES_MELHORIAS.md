@@ -214,3 +214,4 @@ Me diga quais melhorias você gostaria que eu implementasse e eu faço para voc�
 Recomendo começar pelas 5 primeiras (Alto Impacto, Baixa Complexidade) - elas vão melhorar muito a experiência sem adicionar muita complexidade.
 
 
+

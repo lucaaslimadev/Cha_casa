@@ -70,6 +70,7 @@ function extractKeywords(name: string, category?: string): string[] {
     'corte': 'cutting+board',
     'pudim': 'pudding',
     'chaleira': 'kettle',
+    'chaleira': 'kettle',
     'bolo': 'cake',
     'aparelho': 'dinnerware',
     'jantar': 'dinnerware',
