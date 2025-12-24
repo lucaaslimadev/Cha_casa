@@ -167,7 +167,7 @@ export default function AdminPage() {
                       toast.error(result.error)
                     }
                   } catch (error) {
-                    toast.error('Erro ao popular dados')
+                    toast.error("Erro ao popular dados")
                   }
                 }}
                 variant="outline"
