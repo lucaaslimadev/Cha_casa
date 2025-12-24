@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       
       // Popular RSVPs
       for (const rsvp of existingRSVPs) {
-        await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/rsvp-data`, {
+        const response = await fetch('/api/rsvp-data', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       
       // Popular presentes
       for (const giftId of existingGifts) {
-        await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/gifts`, {
+        const response = await fetch('/api/gifts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
