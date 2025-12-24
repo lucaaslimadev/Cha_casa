@@ -9,7 +9,7 @@ export interface RSVPEntry {
 }
 
 // Simulação de banco de dados em memória (em produção, usar um banco real)
-let rsvpData: RSVPEntry[] = []
+export let rsvpData: RSVPEntry[] = []
 
 export async function GET() {
   return NextResponse.json({ rsvps: rsvpData })

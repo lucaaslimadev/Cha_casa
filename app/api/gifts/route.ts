@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 // Simulação de banco de dados em memória (em produção, usar um banco real)
-let chosenGifts: string[] = []
+export let chosenGifts: string[] = []
 
 export async function GET() {
   return NextResponse.json({ chosenGifts })

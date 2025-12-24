@@ -1,92 +1,72 @@
 import { NextRequest, NextResponse } from "next/server"
 
+// Importar as variáveis globais das outras APIs
+import { chosenGifts } from "../gifts/route"
+import { rsvpData } from "../rsvp-data/route"
+
 // Dados baseados nas mensagens do Telegram fornecidas
 const existingRSVPs = [
   {
-    id: "1735048553000",
     name: "Júlia França",
     guests: 1,
-    message: "Muito feliz por vocês e por essa nova fase que estão vivendo!!! Peço a Deus que continue abençoando e iluminando o caminho de vocês dois. Vocês merecem ❤️ ❤️",
-    date: "2025-12-24T13:05:53.000Z"
+    message: "Muito feliz por vocês e por essa nova fase que estão vivendo!!! Peço a Deus que continue abençoando e iluminando o caminho de vocês dois. Vocês merecem ❤️ ❤️"
   },
   {
-    id: "1735049746000",
     name: "Valdirene Lima",
     guests: 4,
-    message: "🥳🥳Bora festar meus Amores❤️❤️",
-    date: "2025-12-24T13:25:46.000Z"
+    message: "🥳🥳Bora festar meus Amores❤️❤️"
   },
   {
-    id: "1735049968000",
     name: "Gabriela Cordeiro",
     guests: 1,
-    message: "",
-    date: "2025-12-24T13:29:28.000Z"
+    message: ""
   },
   {
-    id: "1735050073000",
     name: "Vinicius Leite",
     guests: 1,
-    message: "Que abençoe a união de vocês. ❤️",
-    date: "2025-12-24T13:31:13.000Z"
+    message: "Que abençoe a união de vocês. ❤️"
   },
   {
-    id: "1735050216000",
     name: "Fernanda Taques",
     guests: 1,
-    message: "Quero a minha buzinha kkkkk",
-    date: "2025-12-24T13:33:36.000Z"
+    message: "Quero a minha buzinha kkkkk"
   },
   {
-    id: "1735050300000",
     name: "Guilherme",
     guests: 1,
-    message: "Gordão tá feliz com a notícia",
-    date: "2025-12-24T13:35:00.000Z"
+    message: "Gordão tá feliz com a notícia"
   }
 ]
 
-// Presentes escolhidos baseados na mensagem do Telegram
-const existingGifts = [
-  "13" // Sanduicheira e Grill Britânia BGR27I Press 2 em 1 850W - Laleska Pauliana
-]
+const existingGifts = ["13"]
 
 export async function POST(request: NextRequest) {
   try {
     const { action, password } = await request.json()
     
-    // Verificar senha admin
     const adminPassword = process.env.ADMIN_PASSWORD || "admin123"
     if (password !== adminPassword) {
       return NextResponse.json({ error: "Senha incorreta" }, { status: 401 })
     }
     
     if (action === "populate") {
-      // Popular dados nas APIs
-      
-      // Popular RSVPs
+      // Popular RSVPs diretamente
       for (const rsvp of existingRSVPs) {
-        const response = await fetch('/api/rsvp-data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: rsvp.name,
-            guests: rsvp.guests,
-            message: rsvp.message
-          })
-        })
+        const newRSVP = {
+          id: Date.now().toString() + Math.random(),
+          name: rsvp.name,
+          guests: rsvp.guests,
+          message: rsvp.message,
+          date: new Date().toISOString()
+        }
+        rsvpData.push(newRSVP)
       }
       
-      // Popular presentes
+      // Popular presentes diretamente
       for (const giftId of existingGifts) {
-        const response = await fetch('/api/gifts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            giftId,
-            action: 'add'
-          })
-        })
+        if (!chosenGifts.includes(giftId)) {
+          chosenGifts.push(giftId)
+        }
       }
       
       return NextResponse.json({ 
