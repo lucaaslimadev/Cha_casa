@@ -5,7 +5,8 @@ export async function POST(request: NextRequest) {
   try {
     const { password } = await request.json()
     
-    if (password !== "admin123") {
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin123"
+    if (password !== adminPassword) {
       return NextResponse.json({ error: "Senha incorreta" }, { status: 401 })
     }
     
