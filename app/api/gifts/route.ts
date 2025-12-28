@@ -11,6 +11,7 @@ async function loadFromJSONBin(): Promise<string[]> {
     const data = await response.json()
     return data.record || ["13", "20", "1", "25"]
   } catch {
+    // Dados corretos baseados no Telegram
     return ["13", "20", "1", "25"]
   }
 }
