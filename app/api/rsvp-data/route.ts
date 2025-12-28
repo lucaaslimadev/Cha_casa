@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server"
-import { kv } from "@vercel/kv"
 
 export interface RSVPEntry {
   id: string
@@ -9,10 +8,8 @@ export interface RSVPEntry {
   date: string
 }
 
-const RSVP_KEY = "rsvp_data"
-
-// Dados iniciais (carregados uma vez)
-const initialRSVPs: RSVPEntry[] = [
+// Dados em memória com todos os existentes
+let rsvpData: RSVPEntry[] = [
   {
     id: "1735048553000",
     name: "Júlia França",
@@ -99,23 +96,8 @@ const initialRSVPs: RSVPEntry[] = [
   }
 ]
 
-async function loadRSVPs(): Promise<RSVPEntry[]> {
-  try {
-    let rsvps = await kv.get<RSVPEntry[]>(RSVP_KEY)
-    if (!rsvps) {
-      // Primeira vez - carregar dados iniciais
-      await kv.set(RSVP_KEY, initialRSVPs)
-      rsvps = initialRSVPs
-    }
-    return rsvps
-  } catch {
-    return initialRSVPs
-  }
-}
-
 export async function GET() {
-  const rsvps = await loadRSVPs()
-  return NextResponse.json({ rsvps })
+  return NextResponse.json({ rsvps: rsvpData })
 }
 
 export async function POST(request: NextRequest) {
@@ -130,10 +112,7 @@ export async function POST(request: NextRequest) {
       date: new Date().toISOString()
     }
     
-    const rsvps = await loadRSVPs()
-    rsvps.push(newRSVP)
-    await kv.set(RSVP_KEY, rsvps)
-    
+    rsvpData.push(newRSVP)
     return NextResponse.json({ success: true, rsvp: newRSVP })
   } catch (error) {
     return NextResponse.json({ error: "Erro ao processar requisição" }, { status: 500 })
