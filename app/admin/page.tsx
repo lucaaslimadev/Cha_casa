@@ -151,6 +151,30 @@ export default function AdminPage() {
             </h1>
             <div className="flex gap-2">
               <Button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/populate-supabase', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ password })
+                    })
+                    const result = await response.json()
+                    if (result.success) {
+                      toast.success(result.message)
+                      window.location.reload()
+                    } else {
+                      toast.error(result.error)
+                    }
+                  } catch (error) {
+                    toast.error('Erro ao popular dados')
+                  }
+                }}
+                variant="outline"
+                className="text-sm"
+              >
+                Popular Dados no Supabase
+              </Button>
+              <Button
                 onClick={handleGeneratePDF}
                 className="bg-brown-soft hover:bg-brown-soft/90 text-white"
               >
