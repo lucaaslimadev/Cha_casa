@@ -332,5 +332,12 @@ export const gifts: Gift[] = [
     description: "Lâmpada inteligente com controle via aplicativo, ajuste de cor e intensidade.",
     image: "/presente 50.jpg",
     category: "Casa"
+  }),
+  createGift({
+    id: "51",
+    name: "Lavadora de Alta Pressão Compacta WAP WL 1800 1400W 1500PSI 360L/h 127V",
+    description: "Lavadora de alta pressão compacta, 1400W, 1500PSI, vazão de 360L/h, 127V, modelo WL 1800 da WAP.",
+    image: "/presente 51.jpg",
+    category: "Casa"
   })
 ]
