@@ -1,35 +1,34 @@
 import { NextRequest, NextResponse } from "next/server"
-import { readFileSync, writeFileSync } from "fs"
-import { join } from "path"
+import { kv } from "@vercel/kv"
 
-const GIFTS_FILE = join(process.cwd(), 'data', 'chosen-gifts.json')
+const GIFTS_KEY = "chosen_gifts"
 
-function loadChosenGifts(): string[] {
+// Dados iniciais (carregados uma vez)
+const initialGifts = ["13", "20", "1", "25"]
+
+async function loadChosenGifts(): Promise<string[]> {
   try {
-    const data = readFileSync(GIFTS_FILE, 'utf8')
-    return JSON.parse(data)
+    let gifts = await kv.get<string[]>(GIFTS_KEY)
+    if (!gifts) {
+      // Primeira vez - carregar dados iniciais
+      await kv.set(GIFTS_KEY, initialGifts)
+      gifts = initialGifts
+    }
+    return gifts
   } catch {
-    return []
-  }
-}
-
-function saveChosenGifts(gifts: string[]): void {
-  try {
-    writeFileSync(GIFTS_FILE, JSON.stringify(gifts, null, 2))
-  } catch (error) {
-    console.error('Erro ao salvar presentes:', error)
+    return initialGifts
   }
 }
 
 export async function GET() {
-  const chosenGifts = loadChosenGifts()
+  const chosenGifts = await loadChosenGifts()
   return NextResponse.json({ chosenGifts })
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { giftId, action } = await request.json()
-    let chosenGifts = loadChosenGifts()
+    let chosenGifts = await loadChosenGifts()
     
     if (action === "add" && !chosenGifts.includes(giftId)) {
       chosenGifts.push(giftId)
@@ -39,7 +38,7 @@ export async function POST(request: NextRequest) {
       chosenGifts = []
     }
     
-    saveChosenGifts(chosenGifts)
+    await kv.set(GIFTS_KEY, chosenGifts)
     return NextResponse.json({ success: true, chosenGifts })
   } catch (error) {
     return NextResponse.json({ error: "Erro ao processar requisição" }, { status: 500 })
