@@ -53,6 +53,27 @@ let rsvpData: RSVPEntry[] = [
     date: "2025-12-24T13:35:00.000Z"
   },
   {
+    id: "1735051759000",
+    name: "Pedro Henrique Barbosa de Lima",
+    guests: 1,
+    message: "",
+    date: "2025-12-24T14:15:59.000Z"
+  },
+  {
+    id: "1735052596000",
+    name: "Rebeca Molina",
+    guests: 2,
+    message: "",
+    date: "2025-12-24T14:39:56.000Z"
+  },
+  {
+    id: "1735054155000",
+    name: "Ângela Maria da Silva",
+    guests: 2,
+    message: "Deus abençoe a união de vocês",
+    date: "2025-12-24T15:09:15.000Z"
+  },
+  {
     id: "1735134209000",
     name: "Henrique Carvalho de Souza",
     guests: 1,
