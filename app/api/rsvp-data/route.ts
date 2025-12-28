@@ -114,6 +114,20 @@ let rsvpData: RSVPEntry[] = [
     guests: 2,
     message: "Obrigada pelo convite felicidades",
     date: "2025-12-27T17:32:58.000Z"
+  },
+  {
+    id: "1735488239000",
+    name: "Rafaela Tavares",
+    guests: 3,
+    message: "",
+    date: "2025-12-28T16:03:59.000Z"
+  },
+  {
+    id: "1735490044000",
+    name: "Rose Bozzoni",
+    guests: 2,
+    message: "",
+    date: "2025-12-28T16:34:04.000Z"
   }
 ]
 

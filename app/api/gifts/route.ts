@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 // Dados em memória - atualize manualmente quando necessário
-let chosenGifts: string[] = ["13", "20", "1", "25"]
+let chosenGifts: string[] = ["13", "20", "1", "25", "18"]
 
 export async function GET() {
   return NextResponse.json({ chosenGifts })
