@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 
 // Dados iniciais para primeira carga
-const initialGifts = ["13", "20", "1", "25", "18"]
+const initialGifts = ["13", "20", "1", "25", "18", "36"]
 
 export async function GET() {
   try {
