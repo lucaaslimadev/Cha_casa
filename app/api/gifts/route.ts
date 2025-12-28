@@ -12,7 +12,13 @@ export async function GET() {
     
     if (error) throw error
     
-    const chosenGifts = data?.map(item => item.gift_id) || initialGifts
+    const chosenGifts = data?.map(item => item.gift_id) || []
+    
+    // Se não tem dados no Supabase, retorna dados iniciais
+    if (chosenGifts.length === 0) {
+      return NextResponse.json({ chosenGifts: initialGifts })
+    }
+    
     return NextResponse.json({ chosenGifts })
   } catch (error) {
     // Fallback para dados iniciais

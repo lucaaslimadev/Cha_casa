@@ -39,7 +39,13 @@ export async function GET() {
     
     if (error) throw error
     
-    const rsvps = data || initialRSVPs
+    const rsvps = data || []
+    
+    // Se não tem dados no Supabase, retorna dados iniciais
+    if (rsvps.length === 0) {
+      return NextResponse.json({ rsvps: initialRSVPs })
+    }
+    
     return NextResponse.json({ rsvps })
   } catch (error) {
     // Fallback para dados iniciais
