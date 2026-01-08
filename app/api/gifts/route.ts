@@ -19,7 +19,9 @@ export async function GET() {
       return NextResponse.json({ chosenGifts: initialGifts })
     }
     
-    return NextResponse.json({ chosenGifts })
+    // Combina dados do Supabase com dados iniciais
+    const allGifts = [...new Set([...initialGifts, ...chosenGifts])]
+    return NextResponse.json({ chosenGifts: allGifts })
   } catch (error) {
     // Fallback para dados iniciais
     return NextResponse.json({ chosenGifts: initialGifts })
@@ -40,13 +42,15 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Retornar lista atualizada
+    // Retornar lista atualizada incluindo dados iniciais
     const { data } = await supabase
       .from('chosen_gifts')
       .select('gift_id')
     
-    const chosenGifts = data?.map(item => item.gift_id) || []
-    return NextResponse.json({ success: true, chosenGifts })
+    const supabaseGifts = data?.map(item => item.gift_id) || []
+    const allGifts = [...new Set([...initialGifts, ...supabaseGifts])]
+    
+    return NextResponse.json({ success: true, chosenGifts: allGifts })
   } catch (error) {
     return NextResponse.json({ error: "Erro ao processar requisição" }, { status: 500 })
   }

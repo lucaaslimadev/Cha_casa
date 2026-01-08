@@ -278,20 +278,6 @@ export const gifts: Gift[] = [
     category: "Decoração"
   }),
   createGift({
-    id: "40",
-    name: "Kit 2 Prateleiras U 60cm Branco",
-    description: "Kit com 2 prateleiras tipo U, 60cm, cor branca, ideal para sala, quarto, livros e fotos.",
-    image: "/presente 40.jpg",
-    category: "Decoração"
-  }),
-  createGift({
-    id: "41",
-    name: "Fruteira Aramada Preta Inox Redonda",
-    description: "Fruteira aramada em aço inox, cor preta, formato redondo, ideal para decoração e organização de frutas no centro da mesa.",
-    image: "/presente 41.jpg",
-    category: "Decoração"
-  }),
-  createGift({
     id: "42",
     name: "Jogo de Lençol Cama KING Percal 400 Fios Cinza",
     description: "Jogo de lençol para cama KING, percal 400 fios, com elástico, padrão hotel, cor cinza, 3 peças.",
@@ -325,13 +311,6 @@ export const gifts: Gift[] = [
     description: "Conjunto com 2 mesinhas de centro para sala, em madeira, formato redondo, pé palito.",
     image: "/presente 49.jpg",
     category: "Decoração"
-  }),
-  createGift({
-    id: "50",
-    name: "Lâmpada Inteligente",
-    description: "Lâmpada inteligente com controle via aplicativo, ajuste de cor e intensidade.",
-    image: "/presente 50.jpg",
-    category: "Casa"
   }),
   createGift({
     id: "51",
