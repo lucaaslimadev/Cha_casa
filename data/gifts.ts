@@ -325,5 +325,12 @@ export const gifts: Gift[] = [
     description: "Churrasqueira Califórnia com bacia, ideal para churrascos em família e amigos.",
     image: "/presente 53.jpg",
     category: "Casa"
+  }),
+  createGift({
+    id: "54",
+    name: "Ducha Eletrônica Intense Fame 5400w",
+    description: "Ducha eletrônica Intense Fame, 5400w, com controle de temperatura e pressão.",
+    image: "/presente 54.jpg",
+    category: "Casa"
   })
 ]
