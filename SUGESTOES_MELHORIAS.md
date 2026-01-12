@@ -215,3 +215,4 @@ Recomendo começar pelas 5 primeiras (Alto Impacto, Baixa Complexidade) - elas v
 
 
 
+

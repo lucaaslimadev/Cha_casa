@@ -318,5 +318,12 @@ export const gifts: Gift[] = [
     description: "Lavadora de alta pressão compacta, 1400W, 1500PSI, vazão de 360L/h, 127V, modelo WL 1800 da WAP.",
     image: "/presente 51.jpg",
     category: "Casa"
+  }),
+  createGift({
+    id: "53",
+    name: "Churrasqueira Califórnia Bacia",
+    description: "Churrasqueira Califórnia com bacia, ideal para churrascos em família e amigos.",
+    image: "/presente 53.jpg",
+    category: "Casa"
   })
 ]
