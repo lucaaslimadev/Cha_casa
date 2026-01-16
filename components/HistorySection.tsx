@@ -68,10 +68,10 @@ export default function HistorySection() {
             31 de Janeiro de 2026
           </p>
           <Button
-            onClick={() => setRsvpOpen(true)}
-            className="mt-4"
+            disabled
+            className="mt-4 opacity-50 cursor-not-allowed"
           >
-            Confirmar Presença
+            Lista Encerrada
           </Button>
         </motion.div>
 
