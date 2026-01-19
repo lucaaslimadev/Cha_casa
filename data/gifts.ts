@@ -332,5 +332,12 @@ export const gifts: Gift[] = [
     description: "Ducha eletrônica Intense Fame, 5400w, com controle de temperatura e pressão.",
     image: "/presente 54.jpg",
     category: "Casa"
+  }),
+  createGift({
+    id: "55",
+    name: "Edredom Dupla Face Percal 400 Fios Grosso Extra Macio Queen Luxo - Casa di Valle",
+    description: "Edredom dupla face em percal 400 fios, grosso e extra macio, tamanho Queen, luxo da marca Casa di Valle.",
+    image: "/presente 55.jpg",
+    category: "Casa"
   })
 ]
