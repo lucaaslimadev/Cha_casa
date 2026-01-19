@@ -339,5 +339,12 @@ export const gifts: Gift[] = [
     description: "Edredom dupla face em percal 400 fios, grosso e extra macio, tamanho Queen, luxo da marca Casa di Valle.",
     image: "/presente 55.jpg",
     category: "Casa"
+  }),
+  createGift({
+    id: "56",
+    name: "Forno Elétrico Philco 44L Preto Dupla Resistência PFE44P",
+    description: "Forno elétrico Philco, capacidade de 44 litros, cor preta, com dupla resistência, modelo PFE44P.",
+    image: "/presente 56.jpg",
+    category: "Cozinha"
   })
 ]
