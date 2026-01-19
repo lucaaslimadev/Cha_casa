@@ -26,11 +26,11 @@ export default function GiftCard({ gift, index, isChosen, onClick }: GiftCardPro
       onClick={!isChosen ? onClick : undefined}
     >
       {/* Imagem do presente */}
-      <div className="aspect-square overflow-hidden">
+      <div className="aspect-square overflow-hidden bg-beige-light flex items-center justify-center">
         <img
           src={gift.image}
           alt={gift.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
 
