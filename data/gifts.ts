@@ -346,5 +346,12 @@ export const gifts: Gift[] = [
     description: "Forno elétrico Philco, capacidade de 44 litros, cor preta, com dupla resistência, modelo PFE44P.",
     image: "/presente 56.jpg",
     category: "Cozinha"
+  }),
+  createGift({
+    id: "57",
+    name: "Edredom Casal King Tecido 400 Fios Luxo Percal Dupla Face",
+    description: "Edredom casal tamanho King, tecido percal 400 fios, luxo, dupla face, macio e confortável.",
+    image: "/presente 57.jpg",
+    category: "Casa"
   })
 ]
