@@ -88,15 +88,23 @@ export default function GiftGrid() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {gifts.map((gift, index) => (
-            <GiftCard
-              key={gift.id}
-              gift={gift}
-              index={index}
-              isChosen={chosenGifts.has(gift.id)}
-              onClick={() => handleGiftClick(gift)}
-            />
-          ))}
+          {gifts
+            .sort((a, b) => {
+              const aChosen = chosenGifts.has(a.id)
+              const bChosen = chosenGifts.has(b.id)
+              // Não escolhidos primeiro (false vem antes de true)
+              if (aChosen === bChosen) return 0
+              return aChosen ? 1 : -1
+            })
+            .map((gift, index) => (
+              <GiftCard
+                key={gift.id}
+                gift={gift}
+                index={index}
+                isChosen={chosenGifts.has(gift.id)}
+                onClick={() => handleGiftClick(gift)}
+              />
+            ))}
         </div>
       </div>
 
